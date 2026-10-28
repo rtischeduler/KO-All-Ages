@@ -1,0 +1,83 @@
+name: Transfer DataStore
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_universe_id:
+        description: Universe ID of the experience to copy data from
+        required: true
+        default: "3926279738"
+        type: string
+      destination_universe_id:
+        description: Universe ID of the experience to copy data to
+        required: true
+        default: "10772894009"
+        type: string
+      datastore_name:
+        description: Data store name (leave blank to transfer every standard data store)
+        required: false
+        default: ""
+        type: string
+      scope:
+        description: Scope to transfer (use "all" for every scope)
+        required: false
+        default: global
+        type: string
+      key_prefix:
+        description: Only transfer keys starting with this prefix (optional)
+        required: false
+        default: ""
+        type: string
+      skip_datastores:
+        description: Comma-separated data store names to skip (ignored if a data store name is set above)
+        required: false
+        default: "Adonis_1,HDAdminPlayerDataV1.0,PlayerLevels_v2"
+        type: string
+      max_entries:
+        description: Stop after this many entries (0 means no limit, and enables auto-continue)
+        required: false
+        default: "0"
+        type: string
+      dry_run:
+        description: List what would be transferred without writing anything
+        required: false
+        default: true
+        type: boolean
+      ignore_checkpoint:
+        description: Ignore saved progress and start from the beginning
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: datastore-transfer
+  cancel-in-progress: false
+
+jobs:
+  transfer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Transfer data
+        env:
+          SOURCE_UNIVERSE_ID: ${{ inputs.source_universe_id }}
+          DEST_UNIVERSE_ID: ${{ inputs.destination_universe_id }}
+          DATASTORE_NAME: ${{ inputs.datastore_name }}
+          SCOPE: ${{ inputs.scope }}
+          KEY_PREFIX: ${{ inputs.key_prefix }}
+          SKIP_DATASTORES: ${{ inputs.skip_datastores }}
+          MAX_ENTRIES: ${{ inputs.max_entries }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          IGNORE_CHECKPOINT: ${{ inputs.ignore_checkpoint }}
+          DEADLINE_MINUTES: "330"
+          GITHUB_TOKEN: ${{ github.token }}
+          ROBLOX_API_KEY_SOURCE: ${{ secrets.ROBLOX_API_KEY_SOURCE || secrets.ROBLOX_API_KEY }}
+          ROBLOX_API_KEY_DEST: ${{ secrets.ROBLOX_API_KEY_DEST || secrets.ROBLOX_API_KEY }}
+        run: node scripts/transfer-datastore.mjs
