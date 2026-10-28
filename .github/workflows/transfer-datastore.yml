@@ -6,12 +6,12 @@ on:
       source_universe_id:
         description: Universe ID of the experience to copy data from
         required: true
-        default: "3926279738"
+        default: "10772894009"
         type: string
       destination_universe_id:
         description: Universe ID of the experience to copy data to
         required: true
-        default: "10772894009"
+        default: "3926279738"
         type: string
       datastore_name:
         description: Data store name (leave blank to transfer every standard data store)
