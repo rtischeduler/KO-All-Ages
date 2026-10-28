@@ -2,9 +2,9 @@
  "signature": "10772894009|3926279738||global|",
  "complete": false,
  "store": "KaijuOwnership",
- "cursor": "eyJ2ZXJzaW9uIjoxLCJjdXJzb3IiOiIwI2dsb2JhbC8xMDcyNzQ3NzQ4NSJ9",
- "storeDone": 2000,
- "done": 2057,
+ "cursor": "eyJ2ZXJzaW9uIjoxLCJjdXJzb3IiOiIwI2dsb2JhbC8xMDkyNTcyMTM0NiJ9",
+ "storeDone": 3000,
+ "done": 3057,
  "failed": [],
- "updatedAt": "2026-10-28T23:44:56.676Z"
+ "updatedAt": "2026-10-28T23:48:37.241Z"
 }
